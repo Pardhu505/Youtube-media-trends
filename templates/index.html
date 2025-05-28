@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Trends Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Media Trends</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flash-messages">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {# The prompt asked for {% if error %}... but app.py uses flash for index page errors #}
+        {# So, get_flashed_messages above handles this. If 'error' context variable is also sometimes passed, #}
+        {# this could be added too: #}
+        {# {% if error %} #}
+        {# <div class="error-message">{{ error }}</div> #}
+        {# {% endif %} #}
+
+        <form action="{{ url_for('search_results') }}" method="post">
+            <div>
+                <label for="keywords">Enter keywords/hashtags (comma-separated):</label><br>
+                <textarea name="keywords" id="keywords" rows="3" placeholder="Example: Andhra Pradesh news, AP politics, Telugu trending" required>{{ keywords if keywords else '' }}</textarea><br>
+            </div>
+            <br>
+            <div>
+                <label for="max_results">Number of results to fetch (max 20):</label><br>
+                <input type="number" name="max_results" id="max_results" min="5" max="20" value="{{ max_results if max_results else 20 }}" required><br>
+            </div>
+            <br>
+            <div>
+                <input type="submit" value="Get Trending Videos">
+            </div>
+        </form>
+    </div> 
+</body>
+</html>
