@@ -1,0 +1,223 @@
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1, h2, h3, h4 {
+    color: #333;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Form Styling */
+form div {
+    margin-bottom: 15px;
+}
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+form input[type="text"],
+form input[type="number"],
+form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Prevents padding from affecting width */
+}
+form textarea {
+    min-height: 80px;
+}
+form input[type="submit"],
+a.button-link { /* For download links styled as buttons */
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 1em;
+    text-decoration: none; /* Ensure no underline for button links */
+}
+form input[type="submit"]:hover,
+a.button-link:hover {
+    background-color: #0056b3;
+    text-decoration: none; /* Ensure no underline for button links on hover */
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px 12px; /* Increased padding */
+    text-align: left;
+    vertical-align: top; /* Changed from middle to top for consistency */
+}
+th {
+    background-color: #007bff; /* Header background */
+    color: white; /* Header text color */
+    font-weight: bold;
+}
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Zebra striping for rows */
+}
+tbody tr:hover {
+    background-color: #f1f1f1; /* Hover effect for rows */
+}
+table img {
+    max-width: 120px; /* Ensure images in table are not too large */
+    height: auto;
+    display: block;
+    border-radius: 4px; /* Added for consistency */
+}
+
+/* Top 3 Videos Section */
+.top-videos-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* Was space-between, space-around gives better edge spacing */
+    margin-top: 20px;
+}
+.video-card {
+    flex-basis: calc(33.333% - 22px); /* Adjust for margin and border (10px margin + 1px border each side) */
+    min-width: 280px;
+    margin: 10px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    background-color: #fff;
+    display: flex; /* Added for vertical alignment of content */
+    flex-direction: column; /* Added for vertical alignment */
+    justify-content: space-between; /* Added for vertical alignment */
+}
+.video-card img {
+    width: 100%;
+    max-width: 200px; /* Slightly larger thumbnails for cards */
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    display: block; /* Ensure image is block for auto margins */
+    margin-left: auto; /* Center image */
+    margin-right: auto; /* Center image */
+}
+.video-card h4 {
+    font-size: 1.1em;
+    margin-top: 0;
+    margin-bottom: 10px; /* Added margin */
+    height: 3.6em; /* Keep consistent height for title */
+    overflow: hidden; /* Keep overflow hidden */
+}
+.video-card p {
+    font-size: 0.9em;
+    margin-bottom: 8px; /* Consistent paragraph spacing */
+}
+.video-card a.button-link { /* Specific styling for watch video buttons in cards */
+    background-color: #dc3545;
+    padding: 5px 10px; /* Smaller padding for card buttons */
+    font-size: 0.9em; /* Smaller font for card buttons */
+    align-self: flex-start; /* Align button to the left in the card */
+}
+.video-card a.button-link:hover {
+    background-color: #c82333;
+}
+
+
+/* Utility & Messages */
+.error-message { /* For form errors on index page */
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+.flash-messages { /* Container for flashed messages */
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 15px;
+}
+.flash-messages li {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+.flash-messages li.error { /* For flash(message, 'error') */
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+.flash-messages li.warning { /* For flash(message, 'warning') */
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+.flash-messages li.info { /* For flash(message, 'info') or general messages on results page */
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+.message { /* General message styling, can be combined with flash categories */
+    padding: 10px; 
+    margin-bottom: 20px; 
+    border-radius: 4px;
+}
+/* Styles from results.html for specific messages (if not using flash for them) */
+.message.info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+/* .message.error - already covered by .flash-messages li.error or .error-message */
+
+/* Highlighting for new videos in table */
+table tbody tr.highlight td { /* More specific selector */
+    background-color: #fff3cd !important; /* Ensure it overrides zebra striping */
+    color: #856404;
+}
+
+/* Ensure New Search link on results page is also styled as a button if desired */
+a.new-search-button {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 1em;
+    text-decoration: none;
+    margin-top: 20px; /* Added margin */
+}
+a.new-search-button:hover {
+    background-color: #0056b3;
+    text-decoration: none;
+}
+```
