@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>Search Results</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flash-messages">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    {# For messages like "No videos found" or errors passed directly in context #}
+    {% if message and not (videos and videos|length > 0) %} {# Show general message only if no videos #}
+        <p class="message info">{{ message }}</p>
+    {% endif %}
+    {% if error %} {# For specific error messages passed in context #}
+        <p class="message error">{{ error }}</p>
+    {% endif %}
+
+    <p>Showing results for keywords: <strong>{{ keywords }}</strong> (Max results: {{ max_results }})</p>
+
+    {% if videos and videos|length > 0 %}
+        <h2>Found {{ videos|length }} video(s):</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Thumbnail</th>
+                    <th>Title</th>
+                    <th>Channel</th>
+                    <th>Views</th>
+                    <th>Likes</th>
+                    <th>Comments</th>
+                    <th>Date</th>
+                    <th>Duration</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for video in videos %}
+                <tr {% if video.within_last_24_hours %}class="highlight"{% endif %}> {# Highlight class from style.css #}
+                    <td>
+                        {% if video.thumbnail and video.thumbnail != 'N/A' %}
+                            <img src="{{ url_for('static', filename=video.thumbnail) }}" alt="{{ video.title }} thumbnail"> {# Max-width set by table img in CSS #}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>{{ video.title }}</td>
+                    <td>{{ video.channel_name }}</td>
+                    <td>{{ "{:,}".format(video.views) if video.views is not none and video.views != 'N/A' else 'N/A' }}</td>
+                    <td>{{ "{:,}".format(video.likes) if video.likes is not none and video.likes != 'N/A' else 'N/A' }}</td>
+                    <td>{{ "{:,}".format(video.comments) if video.comments is not none and video.comments != 'N/A' else 'N/A' }}</td>
+                    <td>{{ video.date }}</td>
+                    <td>{{ format_duration(video.duration_seconds) if video.duration_seconds is not none and video.duration_seconds != 'N/A' else 'N/A' }}</td>
+                    <td><a href="{{ video.url }}" target="_blank" rel="noopener noreferrer">Watch</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% elif not message and not error and not get_flashed_messages() %} 
+        {# Only show this specific "no videos" message if no other message or error was set #}
+        {# This might conflict with the `message` variable check above, careful here. #}
+        {# The original had "No videos found from the last 24 hours matching your keywords." #}
+        {# Let's stick to a simpler message if no videos and no other specific message/error #}
+        <p class="message info">No videos found matching your criteria.</p>
+    {% endif %}
+
+    <br>
+    {% if videos and videos|length > 0 %}
+    <a href="{{ url_for('download_excel_report') }}" class="button-link" style="background-color: #28a745; margin-right: 10px;">Download Excel Report</a> {# Keep green color for download #}
+    {% endif %}
+    
+    {# Top 3 videos section - using classes from style.css #}
+    {% if videos and videos|length >= 3 %}
+    <hr style="margin-top: 20px; margin-bottom: 20px;">
+    <h2>Top 3 Trending Videos</h2>
+    <div class="top-videos-container">
+        {% for video in videos[:3] %}
+            <div class="video-card">
+                {% if video.thumbnail and video.thumbnail != 'N/A' %}
+                    <img src="{{ url_for('static', filename=video.thumbnail) }}" alt="{{ video.title }} thumbnail"> {# max-width from .video-card img in CSS #}
+                {% else %}
+                    {# Placeholder for N/A thumbnail, CSS should ideally style this too #}
+                    <div style="width:100%; height:112px; background-color:#eee; display:flex; align-items:center; justify-content:center; margin-bottom:10px; border-radius: 4px;"><span>N/A</span></div>
+                {% endif %}
+                <h4>{{ video.title[:60] }}{% if video.title|length > 60 %}...{% endif %}</h4>
+                <p><small>Channel: {{ video.channel_name }}</small></p>
+                <p><small>Views: {{ "{:,}".format(video.views) if video.views is not none and video.views != 'N/A' else 'N/A' }} | Likes: {{ "{:,}".format(video.likes) if video.likes is not none and video.likes != 'N/A' else 'N/A' }}</small></p>
+                <p><a href="{{ video.url }}" target="_blank" rel="noopener noreferrer" class="button-link">Watch Video</a></p> {# Uses .video-card a.button-link from CSS #}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <a href="{{ url_for('index') }}" class="button-link new-search-button">New Search</a>
+</div>
+</body>
+</html>
