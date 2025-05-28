@@ -1,0 +1,7 @@
+Flask
+pandas
+youtubesearchpython
+yt-dlp
+Pillow
+openpyxl
+requests
